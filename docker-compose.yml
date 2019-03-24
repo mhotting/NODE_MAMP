@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  node:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - ./package.json:/usr/src/app/package.json
+      - ./package-lock.json:/usr/src/app/package-lock.json
+      - notused:/usr/src/app/node_modules
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=my_db
+      - MYSQL_USER=mhotting
+      - MYSQL_PASSWORD=pwd
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./db:/var/lib/mysql
+
+volumes:
+    notused:
+    mysql:
+      driver: "local"
